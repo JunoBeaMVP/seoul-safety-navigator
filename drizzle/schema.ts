@@ -25,4 +25,14 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * The latest normalized KMA result. Keeping the upstream payload server-side
+ * avoids exposing service keys and allows the scheduled refresh to warm cache.
+ */
+export const weatherSnapshots = mysqlTable("weatherSnapshots", {
+  id: int("id").autoincrement().primaryKey(),
+  payload: text("payload").notNull(),
+  collectedAt: timestamp("collectedAt").defaultNow().notNull(),
+});
+
+export type WeatherSnapshot = typeof weatherSnapshots.$inferSelect;
